@@ -10,20 +10,16 @@ jobs:
       - run:
           name: Test the application
           command: |
-            curl -sSf http://35.223.142.78:80 | grep -q 'Todo App'
+            curl -sSf http://35.223.142.78:80/healthz
   load_test:
     docker:
-      - image: node:14.15.4
+      - image: williamyeh/wrk
     steps:
       - checkout
       - run:
-          name: Install Load Test Dependencies
+          name: Run load tests
           command: |
-            npm install -g artillery
-      - run:
-          name: Run Load Test
-          command: |
-            artillery quick -r 10 -d 30 http://35.223.142.78:80 
+            wrk -t2 -c10 -d1m http://35.223.142.78:80
 workflows:
   build-and-deploy:
     jobs:
