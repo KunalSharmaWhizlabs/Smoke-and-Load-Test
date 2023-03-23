@@ -5,12 +5,9 @@ jobs:
       - image: curlimages/curl:latest
     steps:
       - run:
-          name: Wait for deployment to complete
-          command: sleep 60
-      - run:
           name: Test the application
           command: |
-            curl -sSf http://35.223.142.78:80/healthz
+            curl -sSf http://35.223.142.78:80
   load_test:
     docker:
       - image: williamyeh/wrk
