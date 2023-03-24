@@ -1,8 +1,9 @@
 version: 2.1
 jobs:
-  smoke-test:
+  smoke-and-load-test:
     docker:
       - image: google/cloud-sdk
+      - image: williamyeh/wrk
     steps:
       - checkout
       - run:
@@ -17,18 +18,6 @@ jobs:
             set -e
             URL=$(kubectl get service todo-app -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'):80
             curl --fail $URL
-  load_test:
-    docker:
-      - image: google/cloud-sdk
-      - image: williamyeh/wrk
-    steps:
-      - checkout
-      - run:
-          name: Configure gcloud
-          command: |
-            echo $GCLOUD_SERVICE_KEY > key.json
-            gcloud auth activate-service-account --key-file=key.json
-            gcloud container clusters get-credentials whizlabs-cluster --zone us-central1-a --project $GCLOUD_PROJECT_ID
       - run:
           name: Run load tests
           command: |
@@ -36,7 +25,5 @@ jobs:
 workflows:
   test:
     jobs:
-      - smoke-test:
-          context: my-context
-      - load_test:
+      - smoke-and-load-test:
           context: my-context
