@@ -3,7 +3,6 @@ jobs:
   smoke-test:
     docker:
       - image: google/cloud-sdk
-      - image: williamyeh/wrk
     steps:
       - checkout
       - run:
