@@ -20,6 +20,7 @@ jobs:
   load-test:
     docker:
       - image: williamyeh/wrk
+      - image: google/cloud-sdk
     steps:
       - run:
           name: Run load tests
