@@ -18,12 +18,6 @@ jobs:
             set -e
             URL=$(kubectl get service todo-app -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'):80
             curl --fail $URL
-      - run:
-          name: Run load tests
-          command: |
-            set -e
-            URL=$(kubectl get service todo-app -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'):80
-            wrk -t2 -c10 -d30s $URL
   load-test:
     docker:
       - image: williamyeh/wrk
