@@ -2,8 +2,8 @@ version: 2.1
 jobs:
   smoke-and-load-test:
     docker:
+      - image: williamyeh/wrk
       - image: google/cloud-sdk
-      - image: appropriate/wrk 
     steps:
       - checkout
       - run:
