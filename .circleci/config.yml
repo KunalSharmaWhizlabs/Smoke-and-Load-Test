@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  smoke-and-load-test:
+  smoke-test:
     docker:
       - image: williamyeh/wrk
       - image: google/cloud-sdk
@@ -18,14 +18,20 @@ jobs:
             set -e
             URL=$(kubectl get service todo-app -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'):80
             curl --fail $URL
+  load-test:
+    docker:
+      - image: williamyeh/wrk
+    steps:
       - run:
           name: Run load tests
           command: |
             set -e
             URL=$(kubectl get service todo-app -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'):80
-            wrk -t2 -c10 -d1m $URL
+            wrk -t2 -c10 -d1m $URL         
 workflows:
   test:
     jobs:
-      - smoke-and-load-test:
+      - smoke-test:
+          context: my-context
+      - load-test:
           context: my-context
