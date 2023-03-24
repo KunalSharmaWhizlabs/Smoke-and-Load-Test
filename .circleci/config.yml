@@ -24,7 +24,7 @@ jobs:
       - run:
           name: Run load tests
           command: |
-            wrk -t2 -c10 -d30s $URL
+            wrk -t2 -c10 -d30s http://$URL
 workflows:
   test:
     jobs:
