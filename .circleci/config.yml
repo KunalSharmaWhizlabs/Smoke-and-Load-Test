@@ -24,9 +24,17 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Configure gcloud
+          command: |
+            echo $GCLOUD_SERVICE_KEY > key.json
+            gcloud auth activate-service-account --key-file=key.json
+            gcloud container clusters get-credentials whizlabs-cluster --zone us-central1-a --project $GCLOUD_PROJECT_ID
+      - run:
           name: Run load tests
           command: |
-            curl --fail $URL      
+            set -e
+            URL=$(kubectl get service todo-app -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'):80
+            wrk -t2 -c10 -d30s $URL
 workflows:
   test:
     jobs:
