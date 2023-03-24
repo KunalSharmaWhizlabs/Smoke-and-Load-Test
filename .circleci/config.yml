@@ -2,8 +2,7 @@ version: 2.1
 jobs:
   smoke-test:
     docker:
-      - image: google/cloud-sdk
-      - image: williamyeh/wrk
+      - image: google/cloud-sdk williamyeh/wrk
     steps:
       - checkout
       - run:
