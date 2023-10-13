@@ -15,7 +15,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Run load tests
+          name: Run the load tests
           command: |
             wrk -t2 -c10 -d1m $URL
 workflows:
